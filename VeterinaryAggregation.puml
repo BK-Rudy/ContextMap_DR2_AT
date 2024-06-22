@@ -1,0 +1,23 @@
+@startuml Veterinary_Aggregate
+
+skinparam componentStyle uml2
+
+package "'Veterinary' Aggregate" <<Rectangle>> {
+	class Veterinary <<(A,#fffab8) Aggregate Root>> {
+		Integer veterinaryId
+		String name
+		String cfv
+		String specialty
+		String emailAddress
+		String address
+		String contact
+	}
+    
+    class Contact <<(V,DarkSeaGreen) Value Object>> {
+		String phoneNumber
+		String emailAddress
+	}
+}
+
+Veterinary --> Contact : contact
+@enduml

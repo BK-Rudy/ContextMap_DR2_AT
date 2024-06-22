@@ -1,0 +1,77 @@
+@startuml PetFriendsContextDiagram
+
+skinparam componentStyle uml2
+
+component [SchedulingContext]
+note right of [SchedulingContext]
+Fornece as funcionalidades de 
+agendamento de serviços veterinários 
+para os clientes.
+end note
+
+component [VeterinaryManagementContext]
+note right of [VeterinaryManagementContext]
+Fornece as funcionalidades de gestão 
+de informações relacionadas aos 
+veterinários e consultas.
+end note
+
+component [ProductManagementContext]
+note right of [ProductManagementContext]
+Fornece as funcionalidades 
+de gerenciamento de produtos.
+end note
+
+component [ECommerceContext]
+note right of [ECommerceContext]
+Fornece as funcionalidades de 
+e-commerce e carrinho de compras.
+end note
+
+component [FeedSubscriptionContext]
+note right of [FeedSubscriptionContext]
+Fornece as funcionalidades de 
+assinatura de ração e produtos.
+end note
+
+component [ProfessionalAccreditationContext]
+note right of [ProfessionalAccreditationContext]
+Fornece as funcionalidades de 
+credenciamento e validação de veterinários 
+junto ao Conselho Federal de Medicina 
+Veterinária.
+end note
+
+interface "RESTful HTTP" as SchedulingContext_to_VeterinaryManagementContext
+[SchedulingContext] --> SchedulingContext_to_VeterinaryManagementContext : OPEN_HOST_SERVICE
+SchedulingContext_to_VeterinaryManagementContext <.. [VeterinaryManagementContext] : consume
+
+interface "GraphQL" as ECommerceContext_to_SchedulingContext
+[ECommerceContext] --> ECommerceContext_to_SchedulingContext
+ECommerceContext_to_SchedulingContext <.. [SchedulingContext] : conformist
+
+interface "RESTful HTTP" as ECommerceContext_to_VeterinaryManagementContext
+[ECommerceContext] --> ECommerceContext_to_VeterinaryManagementContext
+ECommerceContext_to_VeterinaryManagementContext <.. [VeterinaryManagementContext] : conformist
+
+interface "gRPC" as FeedSubscriptionContext_to_VeterinaryManagementContext
+[FeedSubscriptionContext] --> FeedSubscriptionContext_to_VeterinaryManagementContext : OPEN_HOST_SERVICE
+FeedSubscriptionContext_to_VeterinaryManagementContext <.. [VeterinaryManagementContext] : consume
+
+interface "SOAP" as ProfessionalAccreditationContext_to_VeterinaryManagementContext
+[ProfessionalAccreditationContext] --> ProfessionalAccreditationContext_to_VeterinaryManagementContext
+ProfessionalAccreditationContext_to_VeterinaryManagementContext <.. [VeterinaryManagementContext] : conformist
+
+interface "Kafka" as ProductManagementContext_to_VeterinaryManagementContext
+[ProductManagementContext] --> ProductManagementContext_to_VeterinaryManagementContext
+ProductManagementContext_to_VeterinaryManagementContext <.. [VeterinaryManagementContext] : use via ANTICORRUPTION_LAYER
+
+interface "RESTful HTTP" as ProductManagementContext_to_ECommerceContext
+[ProductManagementContext] --> ProductManagementContext_to_ECommerceContext : SHARED_KERNEL
+ProductManagementContext_to_ECommerceContext <-- [ECommerceContext] : SHARED_KERNEL
+
+interface "RESTful HTTP" as ProductManagementContext_to_FeedSubscriptionContext
+[ProductManagementContext] --> ProductManagementContext_to_FeedSubscriptionContext : OPEN_HOST_SERVICE
+ProductManagementContext_to_FeedSubscriptionContext <.. [FeedSubscriptionContext] : onsume
+
+@enduml

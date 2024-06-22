@@ -1,0 +1,48 @@
+@startuml VeterinaryConsultation_Aggregate
+
+skinparam componentStyle uml2
+
+package "'VeterinaryConsultation' Aggregate" <<Rectangle>> {
+	class VeterinaryConsultation <<(A,#fffab8) Aggregate Root>> {
+		Date date
+		Veterinary veterinary
+		Client client
+		Animal animal
+		String diagnosis
+		String prescription
+		boolean isUrgent
+		List<String> symptoms
+		List<String> treatments
+		String notes
+	}
+	class Veterinary <<(V,DarkSeaGreen) Value Object>> {
+		Integer veterinaryId
+		String name
+		String cfv
+		String specialty
+		String emailAddress
+		String address
+		String contact
+	}
+	class Client <<(V,DarkSeaGreen) Value Object>> {
+		String name
+		String emailAddress
+		String address
+		String contact
+		boolean isSubscribedForServices
+		List<Animal> pets
+	}
+	class Animal <<(V,DarkSeaGreen) Value Object>> {
+		String species
+		String race
+		int age
+		boolean isNeutered
+		List<String> medicalHistory
+		boolean hasInsurance
+	}
+}
+VeterinaryConsultation --> Veterinary : veterinary
+VeterinaryConsultation --> Client : client
+VeterinaryConsultation --> Animal : animal
+
+@enduml

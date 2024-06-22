@@ -1,0 +1,136 @@
+ContextMap PetFriends  {
+	contains SchedulingContext,
+	VeterinaryManagementContext,
+	ProductManagementContext,
+	ECommerceContext,
+	FeedSubscriptionContext,
+	ProfessionalAccreditationContext
+
+	SchedulingContext [U,OHS]-> [D] VeterinaryManagementContext {
+		implementationTechnology = "RESTful HTTP"
+	}
+
+	ECommerceContext [U]-> [D,CF] SchedulingContext {
+		implementationTechnology = "GraphQL"
+	}
+
+	ECommerceContext [U]-> [D,CF] VeterinaryManagementContext {
+		implementationTechnology = "RESTful HTTP"
+	}
+	
+	FeedSubscriptionContext [U,OHS]-> [D]VeterinaryManagementContext {
+		implementationTechnology = "gRPC"
+	}
+
+	ProfessionalAccreditationContext[U]-> [D,CF] VeterinaryManagementContext {
+		implementationTechnology = "SOAP"
+	}
+
+	ProductManagementContext [U]-> [D,ACL] VeterinaryManagementContext {
+		implementationTechnology = "Kafka"		
+	}
+
+	ProductManagementContext [SK] <-> [SK] ECommerceContext {
+		implementationTechnology = "RESTful HTTP"
+	}
+
+	ProductManagementContext [U,OHS]-> [D] FeedSubscriptionContext {
+		implementationTechnology = "RESTful HTTP"
+	}
+}
+
+BoundedContext SchedulingContext {
+    domainVisionStatement "Fornece as funcionalidades de agendamento de serviços veterinários para os clientes da Pet Friends."
+
+    Aggregate ScheduleService {
+        Entity VeterinaryConsultation {
+            aggregateRoot
+            - Date date
+            - Veterinary veterinary
+            - Client client
+            - Animal animal
+			- String diagnosis
+            - String prescription
+            - boolean isUrgent
+			- List<String> symptoms
+        	- List<String> treatments
+        	- String notes
+        }
+
+        Entity Service {
+            aggregateRoot
+            - String name
+            - String description
+            - double value
+			- boolean isActive
+        	- boolean isAvailable
+        }
+
+        Entity Client {
+            aggregateRoot
+            - int clientId
+            - String name
+            - String emailAddress
+            - String address
+			- Contact contact
+			- boolean isSubscribedForServices
+			- List<Animal> pets
+        }
+
+        Entity Contact {
+            aggregateRoot
+            - String phoneNumber
+            - String emailAddress
+        }
+
+        Entity Animal {
+            aggregateRoot
+            - String species
+            - String race
+            - int age
+			- boolean isNeutered
+       		- List<String> medicalHistory
+        	- boolean hasInsurance
+        }
+    }
+
+	Entity Veterinary {
+            aggregateRoot
+			- int veterinaryId
+            - String name
+            - String cfv
+            - String specialty
+			- String emailAddress
+			- String address
+			- Contact contact
+        }
+
+    Aggregate ScheduleCalendar {
+        Entity AvaiableDate {
+            aggregateRoot
+            - Date date
+            - List<LocalTime> avaiableTime
+            - List<Service> servicesAvailable
+        }
+    }
+}
+
+BoundedContext VeterinaryManagementContext {
+    domainVisionStatement "Fornece as funcionalidades de gestão de informações relacionadas aos veterinários e consultas."
+}
+
+BoundedContext ProductManagementContext {
+    domainVisionStatement "Fornece as funcionalidades de gerenciamento de produtos."
+}
+
+BoundedContext ECommerceContext {
+    domainVisionStatement "Fornece as funcionalidades de e-commerce e carrinho de compras."
+}
+
+BoundedContext FeedSubscriptionContext {
+    domainVisionStatement "Fornece as funcionalidades de assinatura de ração e produtos."
+}
+
+BoundedContext ProfessionalAccreditationContext {
+    domainVisionStatement "Fornece as funcionalidades de credenciamento e validação de veterinários junto ao Conselho Federal de Medicina Veterinária."
+}

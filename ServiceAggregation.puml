@@ -1,0 +1,14 @@
+@startuml Service_Aggregate
+
+skinparam componentStyle uml2
+
+package "'Service' Aggregate" <<Rectangle>> {
+	class Service <<(A,#fffab8) Aggregate Root>> {
+		String name
+		String description
+		double value
+		boolean isActive
+		boolean isAvailable
+	}
+}
+@enduml

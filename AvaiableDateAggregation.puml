@@ -1,0 +1,12 @@
+@startuml Avaiable_Date_Aggregate
+
+skinparam componentStyle uml2
+
+package "'AvaiableDate' Aggregate" <<Rectangle>> {
+	class AvaiableDate <<(A,#fffab8) Aggregate Root>> {
+		Date date
+		List<LocalTime> avaiableTime
+		List<Service> servicesAvailable
+	}
+}
+@enduml

@@ -1,0 +1,31 @@
+@startuml Client_Aggregate
+
+skinparam componentStyle uml2
+
+package "'Client' Aggregate" <<Rectangle>> {
+	class Client <<(A,#fffab8) Aggregate Root>> {
+		int clientId
+        String name
+		String emailAddress
+		String address
+		Contact contact
+		boolean isSubscribedForServices
+		List<Animal> pets
+	}
+	class Animal <<(V,DarkSeaGreen) Value Object>> {
+		String species
+		String race
+		int age
+		boolean isNeutered
+		List<String> medicalHistory
+		boolean hasInsurance
+	}
+
+    class Contact <<(V,DarkSeaGreen) Value Object>> {
+		String phoneNumber
+		String emailAddress
+	}
+}
+
+Client --> Contact : contact
+@enduml
